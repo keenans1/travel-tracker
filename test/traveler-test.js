@@ -50,7 +50,8 @@ describe('Traveler', function () {
         expect(traveler.name).to.equal('John Doe');
     });
 
-    // it('should have a traveler type', function () {
-    //     expect(Traveler).to.be.a('function');
-    // });
+    it('should have a travelerType', function () {
+        const traveler = new Traveler(5, 'John Doe', 'skier');
+        expect(traveler.travelerType).to.equal('skier');
+    });
 });
