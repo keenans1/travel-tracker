@@ -47,7 +47,7 @@ describe('Traveler', function () {
 
     it('should have a name', function () {
         const traveler = new Traveler(5, 'John Doe');
-        expect(traveler.name).to.equal('ohn Doe');
+        expect(traveler.name).to.equal('John Doe');
     });
 
     // it('should have a traveler type', function () {
