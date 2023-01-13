@@ -10,14 +10,41 @@
 </head>
 
 <body>
-  <main>
+  <section class="logInPage hidden">
     <h1>Log In</h1>
-    <label>Enter Your Email Address</label>
-    <input id="inputBox" placeholder="Example: johndoe@email.com" />
-    <label>Enter Your Password</label>
-    <input placeholder="Password" />
+    <p id="errorMessage" class="hidden">username or password incorrect.</p>
+    <input id="emailBox" placeholder="username" />
+    <input id="passwordBox" type="password" placeholder="password" />
     <button id="logInButton">log in</button>
-  </main>
+  </section>
+
+  <section class="mainPage">
+    <section>
+      <h2>Your Trips</h2>
+      <ul id="tripList"></ul>
+    </section>
+
+    <section>
+      <h2>Total Spent This Year</h2>
+      <p id="totalSpent"></p>
+    </section>
+
+    <section>
+      <h2>Book a new trip</h2>
+      <label>Date</label>
+      <input id="dateBox" type="date" placeholder="2020/03/14" />
+      <label>Days</label>
+      <input id="daysBox" type="number" placeholder="0" />
+      <label>Number of Travelers</label>
+      <input id="travelersBox" type="number" placeholder="0" />
+
+      <label>Choose a Destination</label>
+      <select id="destinationSelector" class="dropdown">
+        <option class="dropdown-item" value="0">Destinations</option>
+      </select>
+      <button id="bookButton">Book</button>
+    </section>
+  </section>
 
   <!-- Do not include the scripts.js or class files here - it is done by the webpack server -->
   <script src="bundle.js"></script>
