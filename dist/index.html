@@ -10,18 +10,30 @@
 </head>
 
 <body>
-  <section class="logInPage hidden">
+  <section class="logInPage">
     <h1>Log In</h1>
     <p id="errorMessage" class="hidden">username or password incorrect.</p>
-    <input id="emailBox" placeholder="username" />
+    <input id="usernameBox" placeholder="username" />
     <input id="passwordBox" type="password" placeholder="password" />
     <button id="logInButton">log in</button>
   </section>
 
-  <section class="mainPage">
+  <section class="mainPage hidden">
+
+    <section id="nameDisplay"></section>
+
     <section>
       <h2>Your Trips</h2>
-      <ul id="tripList"></ul>
+      <section id="approvedTrips">
+        <h3>Approved</h3>
+        <ul id="approvedTripList"></ul>
+      </section>
+
+      <section id="pendingTrips">
+        <h3>Pending</h3>
+        <ul id="pendingTripList"></ul>
+      </section>
+
     </section>
 
     <section>
@@ -42,8 +54,16 @@
       <select id="destinationSelector" class="dropdown">
         <option class="dropdown-item" value="0">Destinations</option>
       </select>
+
       <button id="bookButton">Book</button>
+
+      <p id="tripCost"></p>
+
     </section>
+  </section>
+
+  <section>
+    <h2 id="dateDisplay" class="hidden">Todays Date: </h2>
   </section>
 
   <!-- Do not include the scripts.js or class files here - it is done by the webpack server -->

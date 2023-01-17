@@ -1,9 +1,6 @@
 import chai from 'chai';
 const expect = chai.expect;
 import Traveler from '../src/traveler';
-import Travelers from '../src/travelers';
-import Destinations from '../src/destinations';
-import Trips from '../src/trips';
 
 describe('Traveler', function () {
 
@@ -46,7 +43,7 @@ describe('Traveler', function () {
                 travelers: 1,
                 date: "2022/09/16",
                 duration: 8,
-                status: "approved",
+                status: "pending",
                 suggestedActivities: []
             },
             {
@@ -128,11 +125,20 @@ describe('Traveler', function () {
         expect(traveler.travelerType).to.equal('skier');
     });
 
+    // it('should show all of a specific users trips, where and when', () => {
+    //     const traveler = new Traveler(44, 'John Doe', 'skier');
+    //     const travelerTrips = traveler.getTravelerTrips(traveler, trips, destinations);
+    //     expect(travelerTrips).to.deep.equal([
+    //         { "Castries, St Lucia": "2022/09/16" },
+    //         { "Lima, Peru": "2021/10/04" },
+    //         { "Sydney, Austrailia": "2022/05/22" }
+    //     ]);
+    // })
+
     it('should show all of a specific users trips, where and when', () => {
         const traveler = new Traveler(44, 'John Doe', 'skier');
-        const travelerTrips = traveler.getTravelerTrips(traveler, trips, destinations);
+        const travelerTrips = traveler.getTravelerTrips(traveler, trips, destinations, 'approved');
         expect(travelerTrips).to.deep.equal([
-            { "Castries, St Lucia": "2022/09/16" },
             { "Lima, Peru": "2021/10/04" },
             { "Sydney, Austrailia": "2022/05/22" }
         ]);
