@@ -6,50 +6,80 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../src/css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,400;0,500;0,700;0,800;0,900;1,100;1,600;1,900&display=swap"
+    rel="stylesheet">
   <title>Travel Tracker</title>
 </head>
 
 <body>
-  <section class="mainPage">
-    <section id="nameDisplay"></section>
-    <section>
-      <h2>Your Trips</h2>
-      <section id="approvedTrips">
-        <h3>Approved</h3>
-        <ul id="approvedTripList"></ul>
-      </section>
-      <section id="pendingTrips">
-        <h3>Pending</h3>
-        <ul id="pendingTripList"></ul>
-      </section>
-    </section>
-    <section>
-      <h2>Total Spent This Year</h2>
+  <header class="hidden">
+    <div class="logo"></div>
+    <section class="headerText">
+      <!-- <p id="nameDisplay">Welcome Keenan Southall</p>
+      <p id="totalSpent">Total Spent This Year: $10000</p>
+      <p id="dateDisplay" class="">8/4/1999</p> -->
+      <p id="nameDisplay"></p>
       <p id="totalSpent"></p>
+      <p id="dateDisplay" class="hidden"></p>
     </section>
-    <section>
-      <h2>Book a new trip</h2>
-      <label>Date</label>
-      <input id="dateBox" type="date" placeholder="2020/03/14" />
-      <label>Days</label>
-      <input id="daysBox" type="number" placeholder="0" />
-      <label>Number of Travelers</label>
-      <input id="travelersBox" type="number" placeholder="0" />
-      <label>Choose a Destination</label>
-      <select id="destinationSelector" class="dropdown">
-        <option class="dropdown-item" value="0">Destinations</option>
-      </select>
-      <button id="bookButton">Book</button>
-      <p id="tripCost"></p>
+  </header>
+  <main class="hidden">
+    <section class="leftSide">
+      <h1 class="tripText">Book a new trip</h1>
+      <section class="bookTrip">
+        <label for="dateBox">Date</label>
+        <input id="dateBox" type="date" />
+        <label>Days</label>
+        <input id="daysBox" type="number" placeholder="0" />
+        <label>Number of Travelers</label>
+        <input id="travelersBox" type="number" placeholder="0" />
+        <label>Choose a Destination</label>
+        <select id="destinationSelector" class="dropdown">
+          <option class="dropdown-item" value="0">Destinations</option>
+        </select>
+        <p id="tripCost"></p>
+        <button id="bookButton">Book</button>
+      </section>
     </section>
+    <section class="rightSide">
+      <h2 class="tripText">Your Trips</h2>
+      <section class="allTrips">
+        <section id="approvedTrips" class="tripList">
+          <h3>Approved</h3>
+          <ul id="approvedTripList"></ul>
+          <!-- <ul id="approvedTripList">
+            <li>Where: Brussels, Belgium When: 2022/10/17</li>
+            <li>Where: Willemstad, Curaçao When: 2020/07/17</li>
+            <li>Where: Jaipur, India When: 2019/07/04</li>
+            <li>Where: Quito, Ecuador When: 2021/02/09</li>
+            <li>Where: Vilnius, Lithuania When: 2020/06/29</li>
+            <li>Where: Montego Bay, Jamaica When: 2020/01/12</li>
+            <li>Where: New York, New York When: 2019/11/30</li>
+            <li>Where: La Isla Tortuga, Costa Rica When: 2019/12/25</li>
+          </ul> -->
+        </section>
+        <section id="pendingTrips" class="tripList">
+          <h3>Pending</h3>
+          <ul id="pendingTripList"></ul>
+          <!-- <ul id="pendingTripList">
+            <li>Where: Quito, Ecuador When: 2023/01/19</li>
+            <li>Where: Antananarivo, Madagascar When: 2023/01/19</li>
+          </ul> -->
+        </section>
+      </section>
+    </section>
+  </main>
+  <section class="logInPage">
+    <h1 class="logInText">Log In</h1>
+    <p id="errorMessage" class="hidden">username or password incorrect.</p>
+    <input id="usernameBox" placeholder="username" />
+    <input id="passwordBox" type="password" placeholder="password" />
+    <button id="logInButton">log in</button>
   </section>
-  <section>
-    <h2 id="dateDisplay" class="">Todays Date: </h2>
-  </section>
-
-  <!-- Do not include the scripts.js or class files here - it is done by the webpack server -->
   <script src="bundle.js"></script>
-
 </body>
 
 </html>
