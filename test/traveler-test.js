@@ -3,7 +3,6 @@ const expect = chai.expect;
 import Traveler from '../src/traveler';
 
 describe('Traveler', function () {
-
     const travelers = {
         travelers: [
             {
@@ -33,7 +32,6 @@ describe('Traveler', function () {
             }
         ]
     }
-
     const trips = {
         trips: [
             {
@@ -68,7 +66,6 @@ describe('Traveler', function () {
             }
         ]
     }
-
     const destinations = {
         destinations: [
             {
@@ -124,16 +121,6 @@ describe('Traveler', function () {
         const traveler = new Traveler(5, 'John Doe', 'skier');
         expect(traveler.travelerType).to.equal('skier');
     });
-
-    // it('should show all of a specific users trips, where and when', () => {
-    //     const traveler = new Traveler(44, 'John Doe', 'skier');
-    //     const travelerTrips = traveler.getTravelerTrips(traveler, trips, destinations);
-    //     expect(travelerTrips).to.deep.equal([
-    //         { "Castries, St Lucia": "2022/09/16" },
-    //         { "Lima, Peru": "2021/10/04" },
-    //         { "Sydney, Austrailia": "2022/05/22" }
-    //     ]);
-    // })
 
     it('should show all of a specific users trips, where and when', () => {
         const traveler = new Traveler(44, 'John Doe', 'skier');

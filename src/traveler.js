@@ -23,24 +23,6 @@ class Traveler {
             }, [])
     }
 
-    // getTravelerTrips(traveler, trips, destinations) {
-    //     return trips.trips
-    //         .reduce((acc, trip) => {
-    //             if (traveler.id === trip.userID) {
-    //                 acc.push(trip)
-    //             }
-    //             return acc;
-    //         }, [])
-    //         .reduce((acc, trip) => {
-    //             destinations.destinations.forEach(destination => {
-    //                 if (trip.destinationID === destination.id) {
-    //                     acc.push({ [destination.destination]: trip.date })
-    //                 }
-    //             });
-    //             return acc
-    //         }, [])
-    // }
-
     getTotalSpentForYear(traveler, trips, destinations, year) {
         return trips.trips
             .reduce((acc, trip) => {
