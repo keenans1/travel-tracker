@@ -1,14 +1,8 @@
-// An example of how you tell webpack to use a CSS (SCSS) file
 import './css/styles.css';
 import Traveler from '../src/traveler';
 import { getAPIData } from './apiCalls';
 import * as dayjs from 'dayjs';
 
-// An example of how you tell webpack to use an image (also need to link to it in the index.html)
-//import './images/turing-logo.png'
-
-
-//let currentTraveler = new Traveler(2, "Rachael Vaughten", "thrill-seeker");
 let currentTraveler;
 let travelers;
 let trips;
@@ -18,7 +12,8 @@ const currentYear = currentDate.getFullYear().toString();
 
 const logInButton = document.getElementById('logInButton');
 const logInPage = document.querySelector('.logInPage');
-const mainPage = document.querySelector('.mainPage');
+const mainPage = document.querySelector('main');
+const header = document.querySelector('header');
 const usernameBox = document.getElementById('usernameBox');
 const passwordBox = document.getElementById('passwordBox');
 const errorMessage = document.getElementById('errorMessage');
@@ -31,15 +26,29 @@ const dateBox = document.getElementById('dateBox');
 const daysBox = document.getElementById('daysBox');
 const travelersBox = document.getElementById('travelersBox');
 const dateDisplay = document.getElementById('dateDisplay');
-document.getElementById('dateBox').setAttribute('min', new Date().toISOString().split('T')[0]);
 const tripCost = document.getElementById('tripCost');
 const nameDisplay = document.getElementById('nameDisplay');
+document.getElementById('dateBox').setAttribute('min', new Date().toISOString().split('T')[0]);
 
-window.addEventListener('load', getAllData)
+window.addEventListener('load', displayDateAndDestinations)
 logInButton.addEventListener('click', logIn)
 bookButton.addEventListener('click', bookTrip)
 
 setInterval(displayTripCost, 300)
+
+function displayDateAndDestinations() {
+    dateDisplay.innerText = currentDate.toLocaleDateString();
+    Promise.all([getAPIData('travelers'), getAPIData('trips'), getAPIData('destinations')])
+        .then((data) => {
+            travelers = data[0]
+            trips = data[1]
+            destinations = data[2]
+            destinations.destinations.forEach(destination => {
+                destinationSelector.innerHTML += `<option value="${destination.destination}">${destination.destination}</option>`
+            })
+        })
+        .catch(err => console.log('To err is human', err))
+}
 
 function displayTripCost() {
     if (dateBox.value && daysBox.value > 0 && travelersBox.value > 0 && destinationSelector.value != 0) {
@@ -59,6 +68,8 @@ function displayTripCost() {
             suggestedActivities: []
         }
         tripCost.innerText = `This trip will cost approximately $${calculateTripCost(newTrip, correctDestination)}`
+    } else {
+        tripCost.innerText = ''
     }
 }
 
@@ -67,23 +78,16 @@ function calculateTripCost(trip, destination) {
     const def = trip.duration * destination.estimatedLodgingCostPerDay
     const beforeFee = abc + def;
     const afterFee = Number((beforeFee * 1.1).toFixed(0));
-    console.log('final cost', afterFee)
     return afterFee
 }
 
 function bookTrip() {
-
-    // After making these selections, I should see an estimated cost (with a 10% travel agent fee) for the trip.
-
     if (dateBox.value && daysBox.value > 0 && travelersBox.value > 0 && destinationSelector.value != 0) {
-
         const selectedDate = dateBox.value;
         const splitDate = selectedDate.split('-')
         const formattedDate = `${splitDate[0]}/${splitDate[1]}/${splitDate[2]}`;
-
         const correctDestination = destinations.destinations.find(destination => destination.destination === destinationSelector.value)
         const lastTrip = trips.trips.at(-1);
-
         const newTrip = {
             id: lastTrip.id + 1,
             userID: currentTraveler.id,
@@ -94,18 +98,6 @@ function bookTrip() {
             status: "pending",
             suggestedActivities: []
         }
-
-        //tripCost.innerText = calculateTripCost(newTrip, correctDestination)
-
-        // const abc = newTrip.travelers * correctDestination.estimatedFlightCostPerPerson
-        // const def = newTrip.duration * correctDestination.estimatedLodgingCostPerDay
-        // const beforeFee = abc + def;
-        // const afterFee = Number((beforeFee * 1.1).toFixed(0));
-        // console.log('final cost', afterFee)
-
-        approvedTripList.innerHTML = '';
-        pendingTripList.innerHTML = '';
-
         fetch('http://localhost:3001/api/v1/trips', {
             method: 'POST',
             body: JSON.stringify(newTrip),
@@ -116,105 +108,54 @@ function bookTrip() {
             .then(response => response.json())
             .then(json => {
                 console.log(json)
-                getAllData()
+                Promise.all([getAPIData('travelers'), getAPIData('trips'), getAPIData('destinations')])
+                    .then((data) => {
+                        travelers = data[0]
+                        trips = data[1]
+                        destinations = data[2]
+                        showTrips()
+                    })
+                    .catch(err => console.log('To err is human', err))
             })
             .catch(err => console.log(err));
+        daysBox.value = ''
+        travelersBox.value = ''
+        destinationSelector.value = 0
     }
 }
 
-function getAllData() {
-    Promise.all([getAPIData('travelers'), getAPIData('trips'), getAPIData('destinations')])
-        .then((data) => {
-            travelers = data[0]
-            trips = data[1]
-            destinations = data[2]
-            //showTrips()
-        })
-        .catch(err => console.log('To err is human', err))
-}
-
 function showTrips() {
-
-    destinations.destinations.forEach(destination => {
-        destinationSelector.innerHTML += `<option value="${destination.destination}">${destination.destination}</option>`
-    })
-
+    approvedTripList.innerHTML = '';
+    pendingTripList.innerHTML = '';
     const approvedUserTrips = currentTraveler.getTravelerTrips(currentTraveler, trips, destinations, 'approved');
     approvedUserTrips.forEach(trip => {
         let key = Object.keys(trip)
         let value = Object.values(trip)
         approvedTripList.innerHTML += `<li>Where: ${key} When: ${value}</li>`
     })
-
     const pendingUserTrips = currentTraveler.getTravelerTrips(currentTraveler, trips, destinations, 'pending');
     pendingUserTrips.forEach(trip => {
         let key = Object.keys(trip)
         let value = Object.values(trip)
         pendingTripList.innerHTML += `<li>Where: ${key} When: ${value}</li>`
     })
-
-    totalSpent.innerText = `$${currentTraveler.getTotalSpentForYear(currentTraveler, trips, destinations, currentYear)}`
-
-    dateDisplay.innerText += currentDate.toLocaleDateString();
+    totalSpent.innerText = `Total Spent This Year: $${currentTraveler.getTotalSpentForYear(currentTraveler, trips, destinations, currentYear)}`;
 }
 
 function logIn() {
-
-    // const username = usernameBox.value;
-    // if (username.length === 9) {
-    //     let word = username.slice(0, 8);
-    //     let number = parseInt(username.slice(-1))
-    //     console.log('word', word)
-    //     console.log('number', number)
-    //     // test NAN
-    //     if (word === 'traveler' && number > 0 && number < 51) {
-
-    //     }
-    // }
-
-    // map through trips travelers
-    // each iteration create an object wiht a key of traveler id++ and a value of id ++
-    // iterate through the database and check if the username is a key
-
-    const userNameDatabase = travelers.travelers.map(traveler => {
-        let key = `traveler${traveler.id}`;
-        //console.log('key', key)
-        let obj = { [key]: `${traveler.id}` }
-        //console.log('obj', obj)
-        let value = parseInt(Object.values(obj))
-        //console.log('value', value)
-        if (key === usernameBox.value && passwordBox.value === 'travel') {
+    travelers.travelers.forEach(traveler => {
+        let username = `traveler${traveler.id}`;
+        if (username === usernameBox.value && passwordBox.value === 'travel') {
             errorMessage.classList.add('hidden');
             logInPage.classList.add('hidden');
             mainPage.classList.remove('hidden');
+            header.classList.remove('hidden')
             dateDisplay.classList.remove('hidden');
             currentTraveler = new Traveler(traveler.id, traveler.name, traveler.travelerType)
-            showTrips();
             nameDisplay.innerText = `Welcome ${currentTraveler.name}`
-            return currentTraveler
-            //console.log('found', obj)
+            showTrips();
         } else {
             errorMessage.classList.remove('hidden');
         }
-
     })
-
-    // userNameDatabase.find(username => {
-    //     let key = Object.keys(username)
-    //     if (usernameBox.value === key) {
-    //         console.log(username)
-    //     }
-    // })
-
-
-
-
-    // if (usernameBox.value === 'traveler' && passwordBox.value === 'travel') {
-    //     errorMessage.classList.add('hidden');
-    //     logInPage.classList.add('hidden');
-    //     mainPage.classList.remove('hidden');
-    //     dateDisplay.classList.remove('hidden');
-    // } else {
-    //     errorMessage.classList.remove('hidden');
-    // }
 }
