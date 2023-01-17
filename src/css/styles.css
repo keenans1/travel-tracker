@@ -78,3 +78,37 @@ input {
   align-items: center;
   flex-direction: column;
 }
+
+.logInPage {
+  background-color: #88a5dd;
+  height: 100vh;
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* align-items: center; */
+  /* justify-content: center; */
+  border: solid 50px black;
+  border-radius: 50%;
+  /* padding-top: 200px; */
+  /* #a8d8dc
+#9bd2e1
+#7bbce7
+#7eb2e4
+#88a5dd
+#9398d2
+#9b8ac4
+#9d7db2
+#9a709e
+#906388
+#805770 */
+}
+
+#usernameBox,
+#passwordBox {
+  margin-top: 20px;
+  margin-left: 800px;
+}
+
+.logInText {
+  margin-left: 800px;
+  margin-top: 300px;
+}
